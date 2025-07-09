@@ -37,6 +37,7 @@ private:
     void CompileFunction(const std::string& name, const std::vector<IRValue>& values);
     void CompileAsmFunction(const std::string& name, const std::vector<IRValue>& values);
     void CompileValues(const std::vector<IRValue>& value);
+    void MakeBinop(const std::string& op);
     std::string MakeLabel();
     std::string GetLeave();
 };
