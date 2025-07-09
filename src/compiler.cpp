@@ -272,40 +272,22 @@ void Compiler::CompileValues(const std::vector<IRValue>& values)
                 EmitBasic(tmp);
                 break;
             case IRType::EQUAL:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("sete r1 r2 r1");
-                Emit("psh r1");
+                MakeBinop("sete");
                 break;
             case IRType::NEQUAL:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("setne r1 r2 r1");
-                Emit("psh r1");
+                MakeBinop("setne");
                 break;
             case IRType::GREATER:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("setg r1 r2 r1");
-                Emit("psh r1");
+                MakeBinop("setg");
                 break;
             case IRType::LESS:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("setl r1 r2 r1");
-                Emit("psh r1");
+                MakeBinop("setl");
                 break;
             case IRType::GE:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("setge r1 r2 r1");
-                Emit("str sp r1");
+                MakeBinop("setge");
                 break;
             case IRType::LE:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("setle r1 r2 r1");
-                Emit("psh r1");
+                MakeBinop("setle");
                 break;
             case IRType::NOT:
                 Emit("pop r1");
@@ -313,34 +295,30 @@ void Compiler::CompileValues(const std::vector<IRValue>& values)
                 Emit("psh r1");
                 break;
             case IRType::ADD:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("add r1 r2 r1");
-                Emit("psh r1");
+                MakeBinop("add");
                 break;
             case IRType::SUB:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("sub r1 r2 r1");
-                Emit("psh r1");
+                MakeBinop("sub");
                 break;
             case IRType::MUL:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("mlt r1 r2 r1");
-                Emit("psh r1");
+                MakeBinop("mlt");
                 break;
             case IRType::DIV:
-                Emit("pop r1");
-                Emit("pop r2");
-                Emit("div r1 r2 r1");
-                Emit("psh r1");
+                MakeBinop("div");
                 break;
             default:
                 std::cerr << "unsupported opcode: " << (int)op << '\n';
                 exit(1);
         }
     }
+}
+
+void Compiler::MakeBinop(const std::string& op)
+{
+    Emit("pop r1");
+    Emit("pop r2");
+    Emit(op+" r1 r2 r1");
+    Emit("psh r1");
 }
 
 void Compiler::CompileFunction(const std::string& name, const std::vector<IRValue>& values) 
