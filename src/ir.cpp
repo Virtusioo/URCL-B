@@ -291,7 +291,7 @@ void IRGenerator::GenCall()
         bool isGlobalFunction = false;
         bool isGlobalLocal = false;
         if (t.type == TokenType::IDENT) {
-            GetLocal(t.value); // hack
+            GetLocal(t.value);
             isGlobalFunction = m_irInfo.references.count(t.value);
             isGlobalLocal = m_irInfo.globals.count(t.value);
             isGlobalFunction = isGlobalFunction || isGlobalLocal;
