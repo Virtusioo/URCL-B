@@ -1,0 +1,60 @@
+
+//setup:
+    BITS == 16
+    MINSTACK 8192
+    MINHEAP 8192
+    @define bp r20
+
+//data:
+    imm r25 0 // heap base
+
+//runtime:
+    cal .main 
+    hlt 
+.putnumb
+    llod r1 sp 1 
+    out %numb r1 
+    ret 
+.main
+    psh bp 
+    mov bp sp 
+    psh 8 
+    cal .fibonacci 
+    add sp sp 1 
+    psh r1 
+    cal .putnumb 
+    add sp sp 1 
+    mov sp bp 
+    pop bp 
+    ret 
+.fibonacci
+    psh bp 
+    mov bp sp 
+    llod r1 bp 2 
+    mov r2 r1 
+    imm r1 1 
+    setle r1 r2 r1 
+    brz .L0_ r1 
+    llod r1 bp 2 
+    jmp .LEAVEfibonacci_ 
+.L0_
+    llod r1 bp 2 
+    mov r2 r1 
+    imm r1 1 
+    sub r1 r2 r1 
+    psh r1 
+    cal .fibonacci 
+    add sp sp 1 
+    psh r1 
+    llod r2 bp 2 
+    imm r1 2 
+    sub r1 r2 r1 
+    psh r1 
+    cal .fibonacci 
+    add sp sp 1 
+    pop r2 
+    add r1 r2 r1 
+.LEAVEfibonacci_
+    mov sp bp 
+    pop bp 
+    ret 

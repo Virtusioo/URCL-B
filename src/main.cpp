@@ -16,6 +16,9 @@ static inline int PrintUsage()
 
 int main(int argc, char** argv)
 {
+    if (argc == 1)
+        return PrintUsage();
+
     bool nostdlib = false;
     std::vector<std::string> inputFiles;
     std::string outputFile;
@@ -42,8 +45,7 @@ int main(int argc, char** argv)
 
     if (outputFile.empty()) {
         std::cerr << "[FATAL ERROR]: No output file provided!\n";
-        std::cerr << "Compilation Terminated.\n";
-        return 1;
+        return PrintUsage();
     }
 
     if (inputFiles.empty()) {

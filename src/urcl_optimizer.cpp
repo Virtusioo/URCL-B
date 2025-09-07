@@ -17,7 +17,7 @@ void URCLOptimizer::Advance(int i)
 
 std::vector<std::string>& URCLOptimizer::EatInstruction()
 {
-    if (!NotEnd())
+    if (!NotEnd()) 
         return m_dummy;
     return m_source[m_index++];
 }
@@ -60,6 +60,12 @@ void URCLOptimizer::OutputPush(const std::vector<std::string>& ops)
     m_output.push_back(ops);
 }
 
+void URCLOptimizer::Skip()
+{
+    m_optimized = true;
+    OutputEatInstruction();
+}
+
 void URCLOptimizer::CheckInstruction()
 {
     if (m_index + 1 >= m_source.size()) {
@@ -71,8 +77,41 @@ void URCLOptimizer::CheckInstruction()
     auto& second = RequestInstruction(1);
     auto& third = RequestInstruction(2);
 
-    // Ugly optimizations here, ill make this readable in the future..
-    if (first[0] == "psh" && second[0] == "pop") {
+    // Ugly peephole optimizations here, ill make this readable in the future..
+    if (first[0] == "imm" && second[0] == "brz") {
+        m_optimized = false;
+        bool isZero = first[2] == "0";
+        bool sameReg = first[1] == second[2];
+
+        if (isZero && sameReg) {
+            OutputPush({"jmp", second[1]});
+            Advance(2);
+        } else {
+            Skip();
+        }
+    } else if (first[0] == "llod" && second[0] == "mov") {
+        m_optimized = false;
+        bool sameReg = first[1] == second[2];
+
+        if (sameReg) {
+            OutputPush({"llod", second[1], first[2], first[3]});
+            Advance(2);
+        } else {
+            Skip();
+        }
+    } else if (first[0] == "lstr" && second[0] == "llod") {
+        m_optimized = false;
+        bool sameBase = first[1] == second[2];
+        bool sameOffset = first[2] == second[3];
+        bool sameReg = first[3] ==  second[1];
+
+        if (sameBase && sameOffset && sameReg) {
+            Advance(2);
+            OutputPush(first);
+        } else {
+            Skip();
+        }
+    } else if (first[0] == "psh" && second[0] == "pop") {
         m_optimized = false;
         std::string psh_a = first[1];
         std::string pop_a = second[1];

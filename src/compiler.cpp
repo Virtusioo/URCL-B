@@ -406,7 +406,7 @@ void Compiler::LinkAndCompile(const std::vector<IRInfo>& irInfoList, const std::
     m_output << "    cal .main\n    hlt\n";
 
     CompileEverything();
-
+    
     std::string output = m_output.str();
 
     outputFile << m_data.str();

@@ -1,0 +1,40 @@
+
+//setup:
+    BITS == 16
+    MINSTACK 8192
+    MINHEAP 8192
+    @define bp r20
+
+//data:
+    dw [54,57,0]
+    dw [52,50,48,0]
+    imm r25 7 // heap base
+
+//runtime:
+    cal .main 
+    hlt 
+.puts
+    llod r1 sp 1 
+    lod r2 r1 
+    bre ~+4 r2 0 
+    out %text r2 
+    inc r1 r1 
+    jmp ~-4 
+    out %text 10 
+    ret 
+.main
+    psh bp 
+    mov bp sp 
+    jmp .L0_ 
+    psh 0 
+    jmp .L1_ 
+.L0_
+    psh 3 
+.L1_
+    llod r1 bp -1 
+    psh r1 
+    cal .puts 
+    add sp sp 1 
+    mov sp bp 
+    pop bp 
+    ret 

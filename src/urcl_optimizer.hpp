@@ -29,5 +29,6 @@ private:
     void OutputPush(const std::vector<std::string>& ops);
     void OutputEatInstruction();
     void CheckInstruction();
+    void Skip();
     std::string RebuildOutput();
 };
