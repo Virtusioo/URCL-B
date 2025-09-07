@@ -31,8 +31,7 @@
     psh bp 
     mov bp sp 
     llod r2 bp 2 
-    imm r1 1 
-    setle r1 r2 r1 
+    setle r1 r2 1 
     brz .L0_ r1 
     imm r1 1 
     jmp .LEAVEfactorial_ 
@@ -40,8 +39,7 @@
     llod r1 bp 2 
     psh r1 
     llod r2 bp 2 
-    imm r1 1 
-    sub r1 r2 r1 
+    sub r1 r2 1 
     psh r1 
     cal .factorial 
     add sp sp 1 
