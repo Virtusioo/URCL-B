@@ -17,16 +17,13 @@ static inline int PrintUsage()
 int main(int argc, char** argv)
 {
     bool nostdlib = false;
-    bool optimize = false;
     std::vector<std::string> inputFiles;
     std::string outputFile;
 
     // ill make this cleaner in the future
     for (int i = 1; i < argc; ++i) {
         std::string str = argv[i];
-        if (str == "-O") {
-            optimize = true;
-        } else if (str == "-nostdlib") {
+        if (str == "-nostdlib") {
             nostdlib = true;
         } else if (str == "-o") {
             if (i + 1 >= argc || argv[i + 1][0] == '-') {
@@ -93,5 +90,5 @@ int main(int argc, char** argv)
         toLink.push_back(irInfo);
     }
 
-    compiler.LinkAndCompile(toLink, outputFile, optimize);
+    compiler.LinkAndCompile(toLink, outputFile);
 }

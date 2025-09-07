@@ -6,7 +6,7 @@
 class Compiler
 {
 public:
-    void LinkAndCompile(const std::vector<IRInfo>& irInfoList, const std::string& outputPath, bool optimize);
+    void LinkAndCompile(const std::vector<IRInfo>& irInfoList, const std::string& outputPath);
 
 private:
     // Compiler Info

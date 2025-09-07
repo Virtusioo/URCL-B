@@ -376,7 +376,7 @@ void Compiler::CompileEverything()
     }
 }
 
-void Compiler::LinkAndCompile(const std::vector<IRInfo>& irInfoList, const std::string& outputPath, bool optimize)
+void Compiler::LinkAndCompile(const std::vector<IRInfo>& irInfoList, const std::string& outputPath)
 {
     m_irInfoList = irInfoList;
     m_gotError = false;
@@ -410,9 +410,5 @@ void Compiler::LinkAndCompile(const std::vector<IRInfo>& irInfoList, const std::
     std::string output = m_output.str();
 
     outputFile << m_data.str();
-    if (optimize) {
-        outputFile << optimizer.Optimize(output);
-    } else {
-        outputFile << output;
-    }
+    outputFile << optimizer.Optimize(output);
 }
