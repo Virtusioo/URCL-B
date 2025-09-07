@@ -50,8 +50,7 @@
     brz .L1_ r1 
     llod r2 bp -1 
     imm r1 15 
-    mod r1 r2 r1 
-    mov r2 r1 
+    mod r2 r2 r1 
     imm r1 0 
     sete r1 r2 r1 
     brz .L2_ r1 
@@ -62,8 +61,7 @@
 .L2_
     llod r2 bp -1 
     imm r1 3 
-    mod r1 r2 r1 
-    mov r2 r1 
+    mod r2 r2 r1 
     imm r1 0 
     sete r1 r2 r1 
     brz .L4_ r1 
@@ -74,8 +72,7 @@
 .L4_
     llod r2 bp -1 
     imm r1 5 
-    mod r1 r2 r1 
-    mov r2 r1 
+    mod r2 r2 r1 
     imm r1 0 
     sete r1 r2 r1 
     brz .L6_ r1 

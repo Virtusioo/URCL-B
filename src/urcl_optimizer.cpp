@@ -2,7 +2,17 @@
 #include "urcl_optimizer.hpp"
 
 #include <sstream>
-#include <iostream>
+#include <unordered_set>
+
+static std::unordered_set<std::string> g_binops = {
+    "add", "sub", "mlt", "div", "mod",
+    "setl", "setg", "setge", "setle", "sete", "setne"
+};
+
+bool IsBinop(const std::string& value) 
+{
+    return g_binops.count(value);
+}
 
 // Source Functions
 bool URCLOptimizer::NotEnd() 
@@ -78,7 +88,17 @@ void URCLOptimizer::CheckInstruction()
     auto& third = RequestInstruction(2);
 
     // Ugly peephole optimizations here, ill make this readable in the future..
-    if (first[0] == "imm" && second[0] == "brz") {
+    if (IsBinop(first[0]) && second[0] == "mov") {
+        m_optimized = false;
+        bool sameReg = first[1] == second[2];
+
+        if (sameReg) {
+            OutputPush({first[0], second[1], first[2], first[3]});
+            Advance(2);
+        } else {
+            Skip();
+        }
+    } else if (first[0] == "imm" && second[0] == "brz") {
         m_optimized = false;
         bool isZero = first[2] == "0";
         bool sameReg = first[1] == second[2];
