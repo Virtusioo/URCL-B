@@ -34,8 +34,8 @@
 .assign
     psh bp 
     mov bp sp 
-    llod r1 bp 3 
-    llod r2 bp 2 
+    llod r2 bp 3 
+    llod r1 bp 2 
     str r2 r1 
     mov sp bp 
     pop bp 

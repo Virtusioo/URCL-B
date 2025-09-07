@@ -78,15 +78,7 @@ void URCLOptimizer::CheckInstruction()
     auto& third = RequestInstruction(2);
 
     // Ugly peephole optimizations here, ill make this readable in the future..
-    if (first[0] == "psh" && 
-        (second[0] != "psh" || second[0] != "pop") &&
-        third[0] == "pop"
-    ) {
-        m_optimized = false;
-        OutputPush(second);
-        OutputPush({"mov", third[1], first[1]});
-        Advance(3);
-    } else if (first[0] == "imm" && second[0] == "brz") {
+    if (first[0] == "imm" && second[0] == "brz") {
         m_optimized = false;
         bool isZero = first[2] == "0";
         bool sameReg = first[1] == second[2];
@@ -141,6 +133,15 @@ void URCLOptimizer::CheckInstruction()
         if (pop_a[0] != psh_a[0] && pop_a[0] == 'r') {
             OutputPush({"imm", pop_a, psh_a});
         }
+        OutputPush(second);
+        Advance(3);
+    } else if (first[0] == "psh" &&
+         second[0] != "psh" &&
+         second[0] != "pop" &&
+         third[0]  == "pop")
+    {
+        m_optimized = false;
+        OutputPush({"mov", third[1], first[1]});
         OutputPush(second);
         Advance(3);
     } else {

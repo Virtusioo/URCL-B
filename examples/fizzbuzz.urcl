@@ -44,10 +44,8 @@
     mov bp sp 
     psh 1 
 .L0_
-    llod r1 bp -1 
-    psh r1 
+    llod r2 bp -1 
     llod r1 bp 2 
-    pop r2 
     setl r1 r2 r1 
     brz .L1_ r1 
     llod r2 bp -1 

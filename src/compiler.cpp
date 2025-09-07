@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <chrono>
 
 
 std::string Compiler::MakeLabel()
