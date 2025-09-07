@@ -195,9 +195,9 @@ void Compiler::CompileValues(const std::vector<IRValue>& values)
                 break;
             }
             case IRType::DEREF:
-                Emit("lod r1 sp");
+                Emit("pop r1");
                 Emit("lod r1 r1");
-                Emit("str sp r1");
+                Emit("psh r1");
                 break;
             case IRType::BEGIN_TERNARY:
                 tmp = MakeLabel(); // false
@@ -406,7 +406,7 @@ void Compiler::LinkAndCompile(const std::vector<IRInfo>& irInfoList, const std::
     m_output << "    cal .main\n    hlt\n";
 
     CompileEverything();
-    
+
     std::string output = m_output.str();
 
     outputFile << m_data.str();
