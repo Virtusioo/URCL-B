@@ -52,8 +52,7 @@
     cal .SyncFrame 
     brz .L1_ r1 
     cal .ClearScreen 
-    llod r1 bp -1 
-    mov r2 r1 
+    llod r2 bp -1 
     imm r1 1 
     add r1 r2 r1 
     lstr bp -1 r1 

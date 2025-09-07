@@ -59,7 +59,6 @@ void Lexer::LexString()
 }
 
 #include <sstream>
-#include <iomanip>
 
 void Lexer::LexNumber()
 {
@@ -126,6 +125,7 @@ void Lexer::LexOperand()
         CaseOperand('-', TokenType::MINUS);
         CaseOperand('*', TokenType::STAR);
         CaseOperand('/', TokenType::SLASH);
+        CaseOperand('%', TokenType::PERCENT);
         CaseOperand('{', TokenType::OPENBRACE);
         CaseOperand('}', TokenType::CLOSEBRACE);
         CaseOperand('(', TokenType::OPENPAREN);

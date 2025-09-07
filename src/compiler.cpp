@@ -306,6 +306,9 @@ void Compiler::CompileValues(const std::vector<IRValue>& values)
             case IRType::DIV:
                 MakeBinop("div");
                 break;
+            case IRType::MOD:
+                MakeBinop("mod");
+                break;
             default:
                 std::cerr << "unsupported opcode: " << (int)op << '\n';
                 exit(1);

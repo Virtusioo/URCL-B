@@ -1,0 +1,105 @@
+
+//setup:
+    BITS == 16
+    MINSTACK 8192
+    MINHEAP 8192
+    @define bp r20
+
+//data:
+    dw [70,105,122,122,66,117,122,122,0]
+    dw [66,117,122,122,0]
+    dw [70,105,122,122,0]
+    imm r25 19 // heap base
+
+//runtime:
+    cal .main 
+    hlt 
+.putline
+    out %text 10 
+    ret 
+.puts
+    llod r1 sp 1 
+    lod r2 r1 
+    bre ~+4 r2 0 
+    out %text r2 
+    inc r1 r1 
+    jmp ~-4 
+    out %text 10 
+    ret 
+.putnumb
+    llod r1 sp 1 
+    out %numb r1 
+    ret 
+.main
+    psh bp 
+    mov bp sp 
+    psh 15 
+    cal .fizzbuzz 
+    add sp sp 1 
+    mov sp bp 
+    pop bp 
+    ret 
+.fizzbuzz
+    psh bp 
+    mov bp sp 
+    psh 1 
+.L0_
+    llod r1 bp -1 
+    psh r1 
+    llod r1 bp 2 
+    pop r2 
+    setl r1 r2 r1 
+    brz .L1_ r1 
+    llod r2 bp -1 
+    imm r1 15 
+    mod r1 r2 r1 
+    mov r2 r1 
+    imm r1 0 
+    sete r1 r2 r1 
+    brz .L2_ r1 
+    psh 0 
+    cal .puts 
+    add sp sp 1 
+    jmp .L3_ 
+.L2_
+    llod r2 bp -1 
+    imm r1 3 
+    mod r1 r2 r1 
+    mov r2 r1 
+    imm r1 0 
+    sete r1 r2 r1 
+    brz .L4_ r1 
+    psh 14 
+    cal .puts 
+    add sp sp 1 
+    jmp .L5_ 
+.L4_
+    llod r2 bp -1 
+    imm r1 5 
+    mod r1 r2 r1 
+    mov r2 r1 
+    imm r1 0 
+    sete r1 r2 r1 
+    brz .L6_ r1 
+    psh 9 
+    cal .puts 
+    add sp sp 1 
+    jmp .L7_ 
+.L6_
+    llod r1 bp -1 
+    psh r1 
+    cal .putnumb 
+    add sp sp 1 
+    cal .putline 
+.L7_
+.L5_
+.L3_
+    llod r2 bp -1 
+    imm r1 1 
+    add r1 r2 r1 
+    lstr bp -1 r1 
+    jmp .L0_ 
+.L1_
+    mov sp bp 
+    pop bp 
+    ret 

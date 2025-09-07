@@ -123,6 +123,7 @@ void IRGenerator::ExpectSemicolon()
 // Reserved for IRGenerator::EatOperand()
 #define CaseOperand(tokenType, irType) case tokenType: return irType
 
+// I'm crying
 IRType IRGenerator::EatOperand()
 {
     Token& t = Eat();
@@ -131,6 +132,7 @@ IRType IRGenerator::EatOperand()
         CaseOperand(TokenType::MINUS, IRType::SUB);
         CaseOperand(TokenType::STAR, IRType::MUL);
         CaseOperand(TokenType::SLASH, IRType::DIV);
+        CaseOperand(TokenType::PERCENT, IRType::MOD);
         CaseOperand(TokenType::ISGREATER, IRType::GREATER);
         CaseOperand(TokenType::ISLESS, IRType::LESS);
         CaseOperand(TokenType::ISGE, IRType::GE);
@@ -363,7 +365,11 @@ void IRGenerator::GenUnary()
 void IRGenerator::GenMult()
 {
     GenUnary();
-    while (Type() == TokenType::STAR || Type() == TokenType::SLASH) {
+    while (
+        Type() == TokenType::STAR || 
+        Type() == TokenType::SLASH || 
+        Type() == TokenType::PERCENT
+    ) {
         IRType op = EatOperand();
         GenUnary();
         Emit(op);

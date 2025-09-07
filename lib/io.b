@@ -42,6 +42,10 @@ print __asm__ {
     "jmp ~-4"
 }
 
+putline __asm__ {
+    "out %text 10"
+}
+
 /* OUTPUT END */
 
 /* INPUT BEGIN */

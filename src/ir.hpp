@@ -50,6 +50,7 @@ enum class IRType
     SUB,
     MUL,
     DIV,
+    MOD,
 };
 
 enum class IRValuesType

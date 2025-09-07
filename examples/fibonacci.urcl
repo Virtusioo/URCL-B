@@ -30,16 +30,14 @@
 .fibonacci
     psh bp 
     mov bp sp 
-    llod r1 bp 2 
-    mov r2 r1 
+    llod r2 bp 2 
     imm r1 1 
     setle r1 r2 r1 
     brz .L0_ r1 
     llod r1 bp 2 
     jmp .LEAVEfibonacci_ 
 .L0_
-    llod r1 bp 2 
-    mov r2 r1 
+    llod r2 bp 2 
     imm r1 1 
     sub r1 r2 r1 
     psh r1 

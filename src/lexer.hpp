@@ -28,6 +28,7 @@ enum class TokenType
     MINUS,
     STAR,
     SLASH,
+    PERCENT,
     EQUAL,
     COMMA,
     AMPERSAND,
