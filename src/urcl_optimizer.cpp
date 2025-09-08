@@ -88,7 +88,18 @@ void URCLOptimizer::CheckInstruction()
     auto& third = RequestInstruction(2);
 
     // Ugly peephole optimizations here, ill make this readable in the future..
-    if (first[0] == "imm" && IsBinop(second[0])) {
+    if (first[0] == "sete" && second[0] == "brz") {
+        m_optimized = false;
+        bool isZero = (first[3] == "0");
+        bool sameReg = first[1] == second[2];
+
+        if (sameReg && isZero) {
+            OutputPush({"bnz", second[1], first[2]});
+            Advance(2);
+        } else {
+            Skip();
+        }
+    } else if (first[0] == "imm" && IsBinop(second[0])) {
         m_optimized = false;
         bool usesRegB = (second[2] == first[1]);
         bool usesRegC = (second[3] == first[1]);

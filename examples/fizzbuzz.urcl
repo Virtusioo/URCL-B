@@ -50,8 +50,7 @@
     brz .L1_ r1 
     llod r2 bp -1 
     mod r2 r2 15 
-    sete r1 r2 0 
-    brz .L2_ r1 
+    bnz .L2_ r2 
     psh 0 
     cal .puts 
     add sp sp 1 
@@ -59,8 +58,7 @@
 .L2_
     llod r2 bp -1 
     mod r2 r2 3 
-    sete r1 r2 0 
-    brz .L4_ r1 
+    bnz .L4_ r2 
     psh 14 
     cal .puts 
     add sp sp 1 
@@ -68,8 +66,7 @@
 .L4_
     llod r2 bp -1 
     mod r2 r2 5 
-    sete r1 r2 0 
-    brz .L6_ r1 
+    bnz .L6_ r2 
     psh 9 
     cal .puts 
     add sp sp 1 
