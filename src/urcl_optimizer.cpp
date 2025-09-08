@@ -88,6 +88,7 @@ void URCLOptimizer::CheckInstruction()
     auto& third = RequestInstruction(2);
 
     // Ugly peephole optimizations here, ill make this readable in the future..
+    // Removes basic redundant operations (A Peephole Optimizer)
     if (first[0] == "sete" && second[0] == "brz") {
         m_optimized = false;
         bool isZero = (first[3] == "0");
