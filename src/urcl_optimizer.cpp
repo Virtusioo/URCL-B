@@ -98,7 +98,17 @@ void URCLOptimizer::CheckInstruction()
 
     // Ugly peephole optimizations here, ill make this readable in the future..
     // Removes basic redundant operations (A Peephole Optimizer)
-    if (first[0] == "sete" && second[0] == "brz") {
+    if (first[0] == "setl" && second[0] == "brz") {
+        m_optimized = false;
+        bool sameReg = first[1] == second[2];
+
+        if (sameReg) {
+            OutputPush({"bge", second[1], first[2], first[3]});
+            Advance(2);
+        } else {
+            Skip();
+        }
+    } else if (first[0] == "sete" && second[0] == "brz") {
         m_optimized = false;
         bool isZero = (first[3] == "0");
         bool sameReg = first[1] == second[2];

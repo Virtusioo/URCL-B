@@ -46,8 +46,7 @@
 .L0_
     llod r2 bp -1 
     llod r1 bp 2 
-    setl r1 r2 r1 
-    brz .L1_ r1 
+    bge .L1_ r2 r1 
     llod r2 bp -1 
     mod r2 r2 15 
     bnz .L2_ r2 
