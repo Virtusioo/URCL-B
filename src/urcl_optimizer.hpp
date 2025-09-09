@@ -14,6 +14,7 @@ private:
     std::vector<std::vector<std::string>> m_output;
     std::vector<std::string> m_dummy = {"dummy"};
     size_t m_index;
+    bool m_lastState;
     bool m_optimized;
 
     // Source Functions

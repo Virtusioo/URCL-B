@@ -81,12 +81,13 @@ void URCLOptimizer::OutputPush(const std::vector<std::string>& ops)
 
 void URCLOptimizer::Skip()
 {
-    m_optimized = true;
+    m_optimized = m_lastState;
     OutputEatInstruction();
 }
 
 void URCLOptimizer::CheckInstruction()
 {
+    m_lastState = m_optimized;
     if (m_index + 1 >= m_source.size()) {
         OutputEatInstruction();
         return;
