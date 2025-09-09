@@ -35,11 +35,13 @@ void Compiler::ResolveSymbols()
         }
     }
 
+    m_references = {"main"};
+
     // Dead Code Elimination
     for (auto& irInfo: m_irInfoList) {
         for (const auto& global: irInfo.globals) {
             auto& references = irInfo.globalsMap[global].references;
-
+            
             // if global is not inside references, erase every symbol that the global needs
             // else, insert them again if needed
             if (!m_references.count(global)) {
