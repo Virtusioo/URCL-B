@@ -44,12 +44,12 @@ void Compiler::ResolveSymbols()
             // else, insert them again if needed
             if (!m_references.count(global)) {
                 for (auto& symbol: references) {
-                    irInfo.references.erase(symbol);
+                    m_references.erase(symbol);
                 }
             } else {
                 for (auto& symbol: references) {
                     if (!m_references.count(symbol))
-                        irInfo.references.insert(symbol);
+                        m_references.insert(symbol);
                 }  
             }
 
