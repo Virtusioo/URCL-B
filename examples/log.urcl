@@ -38,8 +38,7 @@
     cal .putchar 
     add sp sp 1 
     llod r2 bp 2 
-    imm r1 1 
-    add r1 r2 r1 
+    add r1 r2 1 
     lstr bp 2 r1 
     jmp .L0_ 
 .L1_

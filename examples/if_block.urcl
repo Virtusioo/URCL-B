@@ -26,15 +26,13 @@
 .main
     psh bp 
     mov bp sp 
-    imm r1 0 
-    brz .L0_ r1 
+    jmp .L0_ 
     psh 0 
     cal .puts 
     add sp sp 1 
-    jmp .L1_ 
+    jmp .L3_ 
 .L0_
-    imm r1 0 
-    brz .L2_ r1 
+    jmp .L2_ 
     psh 3 
     cal .puts 
     add sp sp 1 
@@ -44,7 +42,6 @@
     cal .puts 
     add sp sp 1 
 .L3_
-.L1_
     mov sp bp 
     pop bp 
     ret 
