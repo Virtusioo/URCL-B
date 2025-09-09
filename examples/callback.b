@@ -1,14 +1,16 @@
 
-callback __asm__ {
-    "llod r1 sp 1"
-    "out %numb r1"
-    "out %text 10"
+callback(n) {
+    putnumb(n);
+    putline();
 }
 
-call(n, callback) {
+countdown(n, callback) {
+    if (n == 0)
+        return;
     callback(n);
+    countdown(n - 1, callback);
 }
 
 main() {
-    call(69, callback);
+    countdown(5, callback);
 }
