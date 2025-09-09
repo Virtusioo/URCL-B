@@ -9,6 +9,15 @@ static std::unordered_set<std::string> g_binops = {
     "setl", "setg", "setge", "setle", "sete", "setne"
 };
 
+void replaceAll(std::string& str, const std::string& from, const std::string& to) {
+    if (from.empty()) return; // avoid infinite loop
+    size_t pos = 0;
+    while ((pos = str.find(from, pos)) != std::string::npos) {
+        str.replace(pos, from.length(), to);
+        pos += to.length(); // move past replacement
+    }
+}
+
 bool IsBinop(const std::string& value) 
 {
     return g_binops.count(value);
@@ -199,18 +208,38 @@ void URCLOptimizer::CheckInstruction()
 std::string URCLOptimizer::RebuildOutput()
 {
     std::string output;
+    std::vector<std::vector<std::string>> toReplace;
+    bool wasLabel = false;
 
     for (auto& out: m_output) {
         // Is Label
         if (out[0][0] == '.') {
-            output += out[0];
+            if (!wasLabel) {
+                output += out[0];
+                wasLabel = true;
+                toReplace.push_back({out[0]});
+            } else {
+                toReplace.back().push_back(out[0]);
+                continue;
+            }
         } else {
+            if (wasLabel && toReplace.back().size() == 1) {
+                toReplace.pop_back();
+            }
+            wasLabel = false;
             output += "    ";
             for (std::string& ops: out) {
                 output += ops + " ";
             }
         }
         output += '\n';
+    }
+
+    for (auto& labels: toReplace) {
+        std::string& real = labels[0];
+        for (size_t i = 1; i < labels.size(); i++) {
+            replaceAll(output, labels[i], real);
+        }
     }
 
     return output;

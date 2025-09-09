@@ -54,7 +54,7 @@
     psh 0 
     cal .puts 
     add sp sp 1 
-    jmp .L3_ 
+    jmp .L7_ 
 .L2_
     llod r2 bp -1 
     mod r2 r2 3 
@@ -62,7 +62,7 @@
     psh 14 
     cal .puts 
     add sp sp 1 
-    jmp .L5_ 
+    jmp .L7_ 
 .L4_
     llod r2 bp -1 
     mod r2 r2 5 
@@ -78,8 +78,6 @@
     add sp sp 1 
     cal .putline 
 .L7_
-.L5_
-.L3_
     llod r2 bp -1 
     add r1 r2 1 
     lstr bp -1 r1 
