@@ -5,10 +5,10 @@ callback __asm__ {
     "out %text 10"
 }
 
-call(ck) {
-    ck(69);
+call(n, callback) {
+    callback(n);
 }
 
 main() {
-    call(callback);
+    call(69, callback);
 }

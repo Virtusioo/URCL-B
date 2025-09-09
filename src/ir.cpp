@@ -258,6 +258,13 @@ void IRGenerator::GenPrimary()
             break;
         }
         case TokenType::IDENT: {
+            auto local = GetLocal(t.value);
+
+            if (local.has_value()) {
+                Emit({IRType::LOAD_FROMBASE, std::to_string(local.value())});
+                break;
+            }
+
             if (m_irInfo.references.count(t.value)) {
                 Emit({IRType::LOAD_GLOBAL, t.value});
                 break;
@@ -267,10 +274,6 @@ void IRGenerator::GenPrimary()
                 GetIRGlobal(m_currentGlobal).references.insert(t.value);
                 break;
             }
-
-            auto local = GetLocal(t.value);
-            if (!local.has_value()) break;
-            Emit({IRType::LOAD_FROMBASE, std::to_string(local.value())});
 
             break;
         }
@@ -293,10 +296,10 @@ void IRGenerator::GenCall()
         bool isGlobalFunction = false;
         bool isGlobalLocal = false;
         if (t.type == TokenType::IDENT) {
-            GetLocal(t.value);
-            isGlobalFunction = m_irInfo.references.count(t.value);
+            auto local = GetLocal(t.value);
+
+            isGlobalFunction = m_irInfo.references.count(t.value) && !local.has_value();
             isGlobalLocal = m_irInfo.globals.count(t.value);
-            isGlobalFunction = isGlobalFunction || isGlobalLocal;
         }
         if (!isGlobalFunction) {
             GenPrimary();

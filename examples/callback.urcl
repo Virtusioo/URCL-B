@@ -14,9 +14,10 @@
 .main
     psh bp 
     mov bp sp 
+    psh 69 
     psh .callback 
     cal .call 
-    add sp sp 1 
+    add sp sp 2 
     mov sp bp 
     pop bp 
     ret 
@@ -25,7 +26,8 @@
     mov bp sp 
     llod r1 bp 2 
     psh r1 
-    psh 69 
+    llod r1 bp 3 
+    psh r1 
     llod r1 sp 1 
     cal r1 
     add sp sp 2 
