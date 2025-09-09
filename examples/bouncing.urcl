@@ -1,0 +1,92 @@
+
+//setup:
+    BITS == 16
+    MINSTACK 8192
+    MINHEAP 8192
+    @define bp r20
+
+//data:
+    imm r25 0 // heap base
+
+//runtime:
+    cal .main 
+    hlt 
+.DrawRectangle
+    llod r1 sp 1 
+    llod r2 sp 2 
+    llod r3 sp 3 
+    llod r4 sp 4 
+    add r5 r3 r1 
+    add r6 r4 r2 
+    mov r7 r4 
+    out %x r7 
+    out %y r3 
+    out %color r24 
+    add r7 r7 1 
+    brl ~-4 r7 r6 
+    add r3 r3 1 
+    brl ~-7 r3 r5 
+    ret 
+.FlipScreen
+    out %buffer 2 
+    ret 
+.ClearScreen
+    out %buffer 0 
+    out %buffer 1 
+    ret 
+.SyncFrame
+    imm r1 1 
+    out %buffer 1 
+    out %wait r23 
+    in r0 %wait 
+    ret 
+.SetTargetFPS
+    llod r1 sp 1 
+    div r23 1000 r1 
+    ret 
+.Init2D
+    imm r24 0xFFFF 
+    ret 
+.main
+    psh bp 
+    mov bp sp 
+    sub sp sp 2 
+    psh 55 
+    cal .Init2D 
+    psh 10 
+    cal .SetTargetFPS 
+    add sp sp 1 
+.L0_
+    cal .SyncFrame 
+    brz .L1_ r1 
+    cal .ClearScreen 
+    llod r2 bp -2 
+    add r1 r2 1 
+    lstr bp -2 r1 
+    llod r2 bp -1 
+    llod r1 bp -2 
+    add r1 r2 r1 
+    lstr bp -1 r1 
+    mov r2 r1 
+    add r2 r2 10 
+    brl .L2_ r2 96 
+    llod r2 bp -2 
+    mlt r1 r2 65535 
+    lstr bp -2 r1 
+    imm r1 86 
+    lstr bp -1 r1 
+.L2_
+    llod r1 bp -3 
+    psh r1 
+    llod r1 bp -1 
+    psh r1 
+    psh 10 
+    psh 10 
+    cal .DrawRectangle 
+    add sp sp 4 
+    cal .FlipScreen 
+    jmp .L0_ 
+.L1_
+    mov sp bp 
+    pop bp 
+    ret 
