@@ -48,8 +48,7 @@ void Compiler::ResolveSymbols()
                 }
             } else {
                 for (auto& symbol: references) {
-                    if (!m_references.count(symbol))
-                        m_references.insert(symbol);
+                    m_references.insert(symbol);
                 }  
             }
 
