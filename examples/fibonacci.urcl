@@ -31,8 +31,7 @@
     psh bp 
     mov bp sp 
     llod r2 bp 2 
-    setle r1 r2 1 
-    brz .L0_ r1 
+    brg .L0_ r2 1 
     llod r1 bp 2 
     jmp .LEAVEfibonacci_ 
 .L0_

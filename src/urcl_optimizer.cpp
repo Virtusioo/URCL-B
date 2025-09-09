@@ -6,7 +6,8 @@
 
 static std::unordered_set<std::string> g_binops = {
     "add", "sub", "mlt", "div", "mod",
-    "setl", "setg", "setge", "setle", "sete", "setne"
+    "setl", "setg", "setge", "setle", "sete", "setne",
+    "brg", "ble", "bre", "bge", "brl", "bne"
 };
 
 void replaceAll(std::string& str, const std::string& from, const std::string& to) {
@@ -85,6 +86,22 @@ void URCLOptimizer::Skip()
     OutputEatInstruction();
 }
 
+// Reserved for URCLOptimizer::CheckInstruction()
+#define StartBranchOptimize(firstOp, brzTransformed) \
+    if (first[0] == firstOp && second[0] == "brz") { \
+        m_optimized = false; \
+        bool sameReg = first[1] == second[2]; \
+        if (sameReg) { \
+            OutputPush({brzTransformed, second[1], first[2], first[3]}); \
+            Advance(2); \
+        } else { \
+            Skip(); \
+        } \
+    }
+
+#define BranchOptimize(firstOp, brzTransformed) \
+    else StartBranchOptimize(firstOp, brzTransformed) 
+
 void URCLOptimizer::CheckInstruction()
 {
     m_lastState = m_optimized;
@@ -99,28 +116,14 @@ void URCLOptimizer::CheckInstruction()
 
     // Ugly peephole optimizations here, ill make this readable in the future..
     // Removes basic redundant operations (A Peephole Optimizer)
-    if (first[0] == "setl" && second[0] == "brz") {
-        m_optimized = false;
-        bool sameReg = first[1] == second[2];
+    StartBranchOptimize("setl", "bge")
+    BranchOptimize("setle", "brg")
+    BranchOptimize("setg", "ble")
+    BranchOptimize("setge", "brl")
+    BranchOptimize("sete", "bne")
+    BranchOptimize("setne", "bre")
 
-        if (sameReg) {
-            OutputPush({"bge", second[1], first[2], first[3]});
-            Advance(2);
-        } else {
-            Skip();
-        }
-    } else if (first[0] == "sete" && second[0] == "brz") {
-        m_optimized = false;
-        bool isZero = (first[3] == "0");
-        bool sameReg = first[1] == second[2];
-
-        if (sameReg && isZero) {
-            OutputPush({"bnz", second[1], first[2]});
-            Advance(2);
-        } else {
-            Skip();
-        }
-    } else if (first[0] == "imm" && IsBinop(second[0])) {
+    else if (first[0] == "imm" && IsBinop(second[0])) {
         m_optimized = false;
         bool usesRegB = (second[2] == first[1]);
         bool usesRegC = (second[3] == first[1]);

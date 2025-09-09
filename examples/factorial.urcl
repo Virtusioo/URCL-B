@@ -31,8 +31,7 @@
     psh bp 
     mov bp sp 
     llod r2 bp 2 
-    setle r1 r2 1 
-    brz .L0_ r1 
+    brg .L0_ r2 1 
     imm r1 1 
     jmp .LEAVEfactorial_ 
 .L0_
