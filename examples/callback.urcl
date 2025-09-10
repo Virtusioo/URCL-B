@@ -32,7 +32,7 @@
     psh bp 
     mov bp sp 
     llod r2 bp 3 
-    bne .L0_ r2 0 
+    bnz .L0_ r2 
     jmp .LEAVEcountdown_ 
 .L0_
     llod r1 bp 2 

@@ -123,7 +123,16 @@ void URCLOptimizer::CheckInstruction()
     BranchOptimize("sete", "bne")
     BranchOptimize("setne", "bre")
 
-    else if (first[0] == "imm" && IsBinop(second[0])) {
+    else if (first[0] == "bne") {
+        m_optimized = false;
+
+        if (first[3] == "0") {
+            OutputPush({"bnz", first[1], first[2]});
+            Advance();
+        } else {
+            Skip();
+        }
+    } else if (first[0] == "imm" && IsBinop(second[0])) {
         m_optimized = false;
         bool usesRegB = (second[2] == first[1]);
         bool usesRegC = (second[3] == first[1]);
@@ -213,6 +222,21 @@ void URCLOptimizer::CheckInstruction()
         OutputPush({"mov", third[1], first[1]});
         OutputPush(second);
         Advance(3);
+
+    } else if (first[0] == "mov" && IsBinop(second[0])) {
+        m_optimized = false;
+        bool usesRegB = first[1] == second[2];
+        bool usesRegC = first[1] == second[3];
+        
+        if (usesRegB) {
+            OutputPush({second[0], second[1], first[2], second[3]});
+            Advance(2);
+        } else if (usesRegC) {
+            OutputPush({second[0], second[1], second[2], first[2]});
+            Advance(2);
+        } else {
+            Skip();
+        }
     } else {
         OutputEatInstruction();
     }

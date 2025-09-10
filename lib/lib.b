@@ -1,5 +1,5 @@
 
-/* STANDARD MALLOC.B */
+/* STANDARD LIB.B */
 
 /* Simple Bump Allocator */
 /*
@@ -18,4 +18,10 @@ mreset __asm__ {
 
 msetbase __asm__ {
     "llod r25 sp 1" /* size */
+}
+
+/* ABORT */
+
+abort __asm__ {
+    "hlt"
 }

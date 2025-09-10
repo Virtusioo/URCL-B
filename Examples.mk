@@ -1,11 +1,11 @@
 
-
-# Find all .b files
 SRC := $(wildcard examples/*.b)
 OBJ := $(SRC:.b=.urcl)
 
+.PHONY: all FORCE
 all: $(OBJ)
 
-%.urcl: %.b
+%.urcl: %.b FORCE
 	bcc $< -o $@
 
+FORCE:
