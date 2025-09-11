@@ -26,7 +26,7 @@ putfloat __asm__ {
 puts __asm__ {
     "llod r1 sp 1" /* string pointer */
     "lod r2 r1"
-    "bre ~+4 r2 0"
+    "brz ~+4 r2"
     "out %text r2"
     "inc r1 r1"
     "jmp ~-4"
@@ -36,7 +36,7 @@ puts __asm__ {
 print __asm__ {
     "llod r1 sp 1" /* string pointer */
     "lod r2 r1"
-    "bre ~+4 r2 0"
+    "brz ~+4 r2"
     "out %text r2"
     "inc r1 r1"
     "jmp ~-4"

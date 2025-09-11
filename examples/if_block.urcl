@@ -17,7 +17,7 @@
 .puts
     llod r1 sp 1 
     lod r2 r1 
-    bre ~+4 r2 0 
+    brz ~+4 r2 
     out %text r2 
     inc r1 r1 
     jmp ~-4 
