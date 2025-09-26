@@ -288,9 +288,8 @@ void Compiler::CompileValues(const std::vector<IRValue>& values)
                 MakeBinop("setle");
                 break;
             case IRType::NOT:
-                Emit("pop r1");
-                Emit("not r1 r1");
-                Emit("psh r1");
+                Emit("psh 0");
+                MakeBinop("sete");
                 break;
             case IRType::ADD:
                 MakeBinop("add");

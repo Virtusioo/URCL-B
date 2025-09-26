@@ -340,7 +340,7 @@ void IRGenerator::GenUnary()
     if (Type() == TokenType::STAR) {
         while (Type() == TokenType::STAR) {
             Advance();
-            GenCall();
+            GenUnary();
             Emit(IRType::DEREF);
         } 
     } else if (Type() == TokenType::AMPERSAND) {
@@ -358,7 +358,7 @@ void IRGenerator::GenUnary()
         }
     } else if (Type() == TokenType::NOT) {
         Advance();
-        GenCall();
+        GenUnary();
         Emit(IRType::NOT);
     } else {
         GenCall();
